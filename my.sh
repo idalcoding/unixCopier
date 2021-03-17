@@ -1,21 +1,14 @@
 #!/bin/bash
-# Author : Webster
+# Author : Webster Avosa
 # Copyright (c) 2021
 # Script follows here:
-MY_DIR=$1
-
-# MY_DIR="/home/webster/Desktop/test/"
-# DEST="/home/webster/Desktop/trial/"
 
 echo "------Starting check-------"
-echo "Enter directort to find files"
+echo "Enter directory to find files"
 read MY_DIR
 echo "Now reading contents in "${MY_DIR}/""*
 echo "---------------"
-echo "Enter destination folder to copy files"
-read DEST
-echo "Copying files to "${DEST}""
-FILEEXT="*"
+echo "Looping files in "${MY_DIR}""
 function check(){
     sleep 7 &
     PID=$!
@@ -29,9 +22,19 @@ function check(){
 }
 check
 
+# Add an empty space on terminal 
+echo " "
+echo "Enter destination folder to copy files"
+read DEST
+FILEEXT="*"
+
+# SECTION COMMENTS 
 echo "========NOTICE========"
-echo "Looking for newer files first....."
-echo "           "
+# Add an empty space on terminal 
+echo " "
+echo "Looking for NEWER files FIRST....."
+echo "  
+         "
 # Adding some spinner 
 function spine(){
     echo -ne '#####                     (1%)\r'
@@ -59,6 +62,7 @@ echo "                    "
 echo "                    "
 
 # Checking for newest file/directory 
+# Making sure to pick latest files 
 NEWEST=`ls -tr1d "${MY_DIR}/"*.${FILEEXT} 2>/dev/null | tail -1`
 
 if [ -z "${NEWEST}" ] ; then
@@ -71,8 +75,22 @@ else
     echo "FOUND!!!!Copying ${NEWEST}"
     cp -p "${NEWEST}" "${DEST}"
 fi
-echo "                    "
-echo "Copying your files....."
+echo "  "
+
+# Some spinner to display file copying                 
+echo "Copying your files to "${DEST}""
+function copyFiles(){
+    sleep 7 &
+    PID=$!
+    i=1
+    sp="/-\|"
+    echo -n ' '
+    while [ -d /proc/$PID ]
+    do 
+        printf "\b${sp:i++%${#sp}:1}"
+    done
+}
+copyFiles
 echo "                    "
 echo "This might take a while"
 

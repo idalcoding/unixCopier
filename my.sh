@@ -146,4 +146,42 @@ yetAnotherSpinner
 echo "-----------------------"
 echo "SUCCESSFULLY COPIED FIlES"
 echo "-----------------------"
-echo "----------BYE---------"
+echo "----------Now removing duplicates---------"
+
+FILES_IN_DEST=${DEST}
+if [[ -z "$FILES_IN_DEST" ]]; then
+    echo "Error: files dir is undefined"
+    exit;
+fi
+
+find $FILES_IN_DEST -type f -exec openssl sha1 \{\} \; > /tmp/list.txt
+
+
+count=-1
+total=0
+for listOfFileDuplicates in `cat /tmp/list.txt | sed 's/SHA1(\(.*\))\= \(.*\)$/\2 \1/' | awk '{print $1}' | sort | uniq -c | sort -nr`
+do
+    if [[ $count == -1 ]]
+    then
+        count=$listOfFileDuplicates
+    else 
+        hash=$listOfFileDuplicates
+        if [[ $count == 1 ]]
+        then
+            break
+        fi
+        for file in `grep $hash /tmp/list.txt | sed 's/SHA1(\(.*\))\= \(.*\)$/\2 \1/' | awk '{print $2}'`
+        do
+            if [[ $count > 1 ]]
+            then
+                echo "Moving $file to trash"
+                count=$((count-1))
+            fi
+        done
+        total=`expr $total + $count`
+        count=-1
+    fi
+done
+
+echo "Deleted $total files"
+echo

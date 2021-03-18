@@ -148,8 +148,10 @@ echo "SUCCESSFULLY COPIED FIlES"
 echo "-----------------------"
 echo "----------Now removing duplicates---------"
 
+
 FILES_IN_DEST=${DEST}
-if [[ -z "$FILES_IN_DEST" ]]; then
+if [[ -z "$FILES_IN_DEST" ]]; 
+then
     echo "Error: files dir is undefined"
     exit;
 fi

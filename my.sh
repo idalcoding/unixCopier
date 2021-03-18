@@ -12,7 +12,7 @@ read MY_DIR
 # Doing tests onto the MY_DIR entered to acertain they exist or not
 if [ -d "$MY_DIR" ] 
 then
-    #Take action if MY_DIR exists 
+    #Take action if directory exists 
     echo "Checking files and directories in ${MY_DIR}..."
 else
     #Computation will jump here if MY_DIR does NOT exist 
@@ -39,7 +39,19 @@ check
 echo " "
 echo "Enter destination folder to copy files"
 read DEST
-FILEEXT="*"
+# Doing tests onto the DEST entered to acertain they exist or not
+if [ -d "$DEST" ] 
+then
+    #Take action if MY_DIR exists 
+    echo "Checking files and directories in ${DEST}..."
+else
+    #Computation will jump here if MY_DIR does NOT exist 
+    echo "Error: ${DEST} not found. Exiting."
+    exit 
+fi
+
+
+# FILEEXT="*"
 
 # SECTION COMMENTS 
 echo "========NOTICE========"

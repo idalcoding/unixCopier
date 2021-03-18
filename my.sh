@@ -42,10 +42,10 @@ read DEST
 # Doing tests onto the DEST entered to acertain they exist or not
 if [ -d "$DEST" ] 
 then
-    #Take action if DEST doesnt exists 
+    #Take action if DEST  exists 
     echo "Checking files and directories in ${DEST}..."
 else
-    #Computation will jump here if MY_DIR does NOT exist 
+    #Computation will jump here if DEST does NOT exist 
     echo "Error: ${DEST} not found. Exiting."
     exit 
 fi

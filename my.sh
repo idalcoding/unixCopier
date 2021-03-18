@@ -3,6 +3,8 @@
 # Copyright (c) 2021
 # Script follows here:
 
+##=======SECTION ONE=====######
+# Inputing path to directories/files to do copying 
 echo "------Starting check-------"
 echo "Enter MY_DIR to find files"
 read MY_DIR
@@ -72,21 +74,19 @@ spine
 echo "                    "
 echo "                    "
 
-# Checking for newest file/MY_DIR 
-# Making sure to pick latest files 
-NEWEST=`ls -tr1d "${MY_DIR}/"*.${FILEEXT} 2>/dev/null | tail -1`
+# NEWEST=`ls -tr1d "${MY_DIR}/"*.${FILEEXT} 2>/dev/null | tail -1`
 
-if [ -z "${NEWEST}" ] ; then
-    echo "No newest file to copy"
-    exit 1
-elif [ -d "${NEWEST}" ] ; then
-    echo "The most recent entry is a MY_DIR"
-    exit 1
-else
-    echo "FOUND!!!!Copying ${NEWEST}"
-    cp -p "${NEWEST}" "${DEST}"
-fi
-echo "  "
+# if [ -z "${NEWEST}" ] ; then
+#     echo "No newest file to copy"
+#     exit 1
+# elif [ -d "${NEWEST}" ] ; then
+#     echo "The most recent entry is a MY_DIR"
+#     exit 1
+# else
+#     echo "FOUND!!!!Copying ${NEWEST}"
+#     cp -p "${NEWEST}" "${DEST}"
+# fi
+# echo "  "
 
 # Some spinner to display file copying                 
 echo "Copying your files to "${DEST}""
@@ -104,6 +104,9 @@ function copyFiles(){
 copyFiles
 echo "                    "
 echo "This might take a while"
+
+####========SECTION TWO========#####
+# Doing actual copying of files 
 
 cp -r ${MY_DIR} ${DEST}
 echo "-------------------------"
@@ -157,9 +160,11 @@ yetAnotherSpinner
 echo "-----------------------"
 echo "SUCCESSFULLY COPIED FIlES"
 echo "-----------------------"
+
 echo "----------Now removing duplicates---------"
 
-
+##########========LAST SECTION======###########
+# Checking for duplicates 
 FILES_IN_DEST=${DEST}
 if [[ -z "$FILES_IN_DEST" ]]; 
 then
@@ -169,7 +174,7 @@ fi
 
 find $FILES_IN_DEST -type f -exec openssl sha1 \{\} \; > /tmp/list.txt
 
-
+# Checking if there isnt any duplicates 
 count=-1
 total=0
 for listOfFileDuplicates in `cat /tmp/list.txt | sed 's/SHA1(\(.*\))\= \(.*\)$/\2 \1/' | awk '{print $1}' | sort | uniq -c | sort -nr`
@@ -177,6 +182,9 @@ do
     if [[ $count == -1 ]]
     then
         count=$listOfFileDuplicates
+
+        # Checking if there exist duplicates 
+        # Deleting older files/directories and keeping latest ones 
     else 
         hash=$listOfFileDuplicates
         if [[ $count == 1 ]]
@@ -196,5 +204,6 @@ do
     fi
 done
 
+# Showing total count of deleted files 
 echo "Deleted $total files"
 echo

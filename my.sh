@@ -4,10 +4,21 @@
 # Script follows here:
 
 echo "------Starting check-------"
-echo "Enter directory to find files"
+echo "Enter MY_DIR to find files"
 read MY_DIR
-echo "Now reading contents in "${MY_DIR}/""*
-echo "---------------"
+
+# Doing tests onto the MY_DIR entered to acertain they exist or not
+if [ -d "$MY_DIR" ] 
+then
+    #Take action if MY_DIR exists 
+    echo "Checking files and directories in ${MY_DIR}..."
+else
+    #Computation will jump here if MY_DIR does NOT exist 
+    echo "Error: ${MY_DIR} not found. Exiting."
+    exit 
+fi
+
+
 echo "Looping files in "${MY_DIR}""
 function check(){
     sleep 7 &
@@ -61,17 +72,15 @@ spine
 echo "                    "
 echo "                    "
 
-# Checking for newest file/directory 
+# Checking for newest file/MY_DIR 
 # Making sure to pick latest files 
 NEWEST=`ls -tr1d "${MY_DIR}/"*.${FILEEXT} 2>/dev/null | tail -1`
 
-if [ -z "${NEWEST}" ] ; 
-then
+if [ -z "${NEWEST}" ] ; then
     echo "No newest file to copy"
     exit 1
-elif [ -d "${NEWEST}" ] ; 
-then
-    echo "The most recent entry is a directory"
+elif [ -d "${NEWEST}" ] ; then
+    echo "The most recent entry is a MY_DIR"
     exit 1
 else
     echo "FOUND!!!!Copying ${NEWEST}"

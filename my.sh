@@ -65,10 +65,12 @@ echo "                    "
 # Making sure to pick latest files 
 NEWEST=`ls -tr1d "${MY_DIR}/"*.${FILEEXT} 2>/dev/null | tail -1`
 
-if [ -z "${NEWEST}" ] ; then
+if [ -z "${NEWEST}" ] ; 
+then
     echo "No newest file to copy"
     exit 1
-elif [ -d "${NEWEST}" ] ; then
+elif [ -d "${NEWEST}" ] ; 
+then
     echo "The most recent entry is a directory"
     exit 1
 else

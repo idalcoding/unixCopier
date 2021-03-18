@@ -206,4 +206,4 @@ done
 
 # Showing total count of deleted files 
 echo "Deleted $total files"
-echo
+echo "THE END"

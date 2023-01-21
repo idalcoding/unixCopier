@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo " "
 echo "------Starting check-------"
 echo "Enter MY_DIR to find files"
 read MY_DIR

@@ -1,6 +1,27 @@
 # Getting started
-  * ```cd unixCopier```
-  * ```sudo chmod u+x my.sh && ./my.sh```
 
+Navigate into project directory
 
-Try it yourself. Enjoy!
+```sh
+cd unixCopier
+```
+
+Run below command to do the copying while removing duplicates
+
+```sh
+sudo chmod u+x copy.sh && ./copy.sh
+```
+
+## Testing
+
+To test that above is working run:
+
+```sh
+bash test_script.sh
+```
+
+Enjoy!
+
+# Author
+
+[Webster Avosa](https://github.com/avosa)

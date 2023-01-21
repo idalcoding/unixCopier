@@ -1,5 +1,4 @@
 #!/bin/bash
-# Author : Webster Avosa
 
 echo "------Starting check-------"
 echo "Enter MY_DIR to find files"
@@ -22,29 +21,41 @@ else
     exit
 fi
 
-echo "Removing duplicates from ${MY_DIR}..."
-find ${MY_DIR} -type f -exec md5sum {} + | sort | uniq -w 32 -d --all-repeated=separate | awk '{print $2}' | xargs -I{} rm -f {}
+echo "Removing old duplicates from ${MY_DIR}..."
+
+# Finding all files with duplicate names
+files=$(find ${MY_DIR} -type f -printf "%f\n" | sort | uniq -d)
+
+for file in $files; do
+    # Finding the latest version of the file
+    latest=$(find ${MY_DIR} -type f -name ${file} -printf "%T@ %p\n" | sort -n | tail -1 | awk '{print $2}')
+    # Removing all other versions of the file
+    find ${MY_DIR} -type f -name ${file} ! -wholename ${latest} -delete
+done
 
 echo "Looking for NEWER files FIRST....."
 
 echo "Copying your files to ${DEST}"
 echo "This might take a while"
 
-function spinner() {
-    sleep 7 &
-    PID=$!
-    i=1
-    sp="/-\|"
-    echo -n ' '
-    while [ -d /proc/$PID ]; do 
-        printf "\b${sp:i++%${#sp}:1}"
+# Spinner function that works across all shells
+spin()
+{
+    local -a pid
+    local -a spin
+    spin=( "-" "\\" "|" "/" )
+    printf " [%c]  " "${spin[0]}"
+    for i in "${spin[@]}"; do
+        pid[0]=$!
+        printf "\b\b\b\b[%c]  " "$i"
+        sleep .1
     done
 }
 
-spinner
+# Starting the spinner
+spin &
 
 cp -r ${MY_DIR} ${DEST}
 echo "-------------------------"
 
 echo "Copying complete!"
-

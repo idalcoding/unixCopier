@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Exec=/home/yourname/Desktop/my.sh
+Name=unixCopier
+Icon=/home/yourname/web.png
+GenericName=SSH Server
+Comment=Connect to My Server
+Encoding=UTF-8
+Terminal=true
+Type=Application
+Categories=Application;Network;
